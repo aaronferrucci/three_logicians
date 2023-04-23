@@ -1,0 +1,38 @@
+---
+title: "Three Logicians Walk Into a Bar"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Intro
+
+### Examples
+
+Stop me if you've heard this one before:
+
+*Three logicians walk into a bar. The bartender asks, "do you all want a beer?"*
+
+-   *First logician: "I don't know"*
+-   *Second logician: "I don't know"*
+-   *Third logician: "Yes!"*
+
+
+### Explanation
+
+How does this work? Each logician really does want a beer, but he doesn't know if his colleagues want one. If the bartender's question is taken literally ("do **all** of you want a beer), no logician knows the answer. (On other hand, if any of the logicians didn't want a beer, he or she could answer,"no".) After the first two logicians give their "I don't know" answers (thus - they do want a beer), the third logician can give a definite answer.
+
+### Generalization
+
+Our three logicians may or may not want a beer; 3 logicians and 2 options means there are ${2}^{3}$ = `r 2**3` ways the joke could unfold. But! Some of these outcomes are identical. For example, if the first logician doesn't want a beer, the answers are "no", "no", and "no", no matter what the second and third logicians want.
+
+There are other forms of this joke, depending on the bartender's question.
+An alternative, equally funny, but less jolly form of the joke is:
+
+*Three logicians walk into a bar. The bartender asks, "do any of you want a beer?"*
+
+-   *First logician: "I don't know"*
+-   *Second logician: "I don't know"*
+-   *Third logician: "No!"*
+
+How many different questions can the bartender ask?
