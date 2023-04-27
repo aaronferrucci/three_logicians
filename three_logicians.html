@@ -1628,23 +1628,23 @@ display: none;
 <h1>Intro</h1>
 <div id="the-joke" class="section level3">
 <h3>The Joke</h3>
-<p><em>Three logicians walk into a bar. The bartender asks, “do you all
+<p><em>Three logicians walk into a bar. The bartender asks, “Do you all
 want a beer?”</em></p>
 <ul>
-<li><em>First logician: “I don’t know”</em></li>
-<li><em>Second logician: “I don’t know”</em></li>
-<li><em>Third logician: “Yes!”</em></li>
+<li><em>Ada: “I don’t know”</em></li>
+<li><em>Bertrand: “I don’t know”</em></li>
+<li><em>Claude: “Yes!”</em></li>
 </ul>
 </div>
 <div id="explanation" class="section level3">
 <h3>Explanation</h3>
-<p>How does this work? Each logician really does want a beer, but he
-doesn’t know if his colleagues want one. If the bartender’s question is
-taken literally (“do <strong>all</strong> of you want a beer), no
-logician knows the answer. (On other hand, if any of the logicians
-didn’t want a beer, he or she could answer,”no”.) After the first two
-logicians give their “I don’t know” answers (thus - they do want a
-beer), the third logician can give a definite answer.</p>
+<p>How does this work? Each logician really does want a beer, but
+doesn’t know what the others want. If the bartender’s question is taken
+literally (“do <strong>all</strong> of you want a beer), no logician
+knows the answer - at first. (On other hand, if any of the logicians
+didn’t want a beer, he or she could answer,”no”.) After Ada and Bertrand
+give their “I don’t know” answers (thus - they do want a beer), Claude
+can give a definite answer.</p>
 </div>
 <div id="generalizations" class="section level3">
 <h3>Generalizations</h3>
@@ -1656,30 +1656,49 @@ is:</p>
 <p><em>Three logicians walk into a bar. The bartender asks, “do any of
 you want a beer?”</em></p>
 <ul>
-<li><em>First logician: “I don’t know”</em></li>
-<li><em>Second logician: “I don’t know”</em></li>
-<li><em>Third logician: “No!”</em></li>
+<li><em>A: “I don’t know”</em></li>
+<li><em>B: “I don’t know”</em></li>
+<li><em>C: “No!”</em></li>
 </ul>
-<p>In this case, no one wanted a beer, but only the 3rd logician knew
-enough to answer the bartender.</p>
+<p>In this case, no one wanted a beer, but again only Claude was able to
+answer the bartender.</p>
 <p>Here’s a third form of the joke:</p>
 <p><em>Three logicians walk into a bar. The bartender asks, “do an odd
 number of you want a beer?”</em></p>
 <ul>
-<li><em>First logician: “I don’t know”</em></li>
-<li><em>Second logician: “I don’t know”</em></li>
-<li><em>Third logician: “I don’t know!”</em></li>
+<li><em>A: “I don’t know”</em></li>
+<li><em>B: “I don’t know”</em></li>
+<li><em>C: “I don’t know!”</em></li>
 </ul>
-<p>How many different questions can the bartender ask?</p>
+<p>So funny!</p>
+<p>How many jokes are there? (How many different questions can the
+bartender ask?)</p>
 </div>
 <div id="logicians-desires" class="section level4">
 <h4>Logicians’ Desires</h4>
 <p>Our three logicians may or may not want a beer; 3 logicians and 2
 options means there are <span class="math inline">\({2}^{3}\)</span> = 8
 ways the joke could unfold. But! Some of these outcomes are identical.
-For example, if the first logician doesn’t want a beer, the answers are
-“no”, “no”, and “no”, no matter what the second and third logicians
-want.</p>
+For example, if it’s “do you all want a beer?” and A doesn’t want a
+beer, the answers are “no”, “no”, and “no”, no matter what B and C want.
+If A wants a beer but B doesn’t, the answers are “I don’t know”, “no”,
+and “no”, even if C wants a beer.</p>
+</div>
+<div id="interlude-notation" class="section level4">
+<h4>Interlude: Notation</h4>
+<p>For shorthand, let’s say the “Do you wall want a beer” joke is <span class="math inline">\(j_{AND}\)</span>; “Do any of you want a beer?” is
+<span class="math inline">\(j_{OR}\)</span>, and “Do an odd number of
+you want a beer, <span class="math inline">\(j_{XOR}\)</span>. The
+logicians’ beer/no-beer choice is 1 for beer, 0 for no-beer, and there
+are three of them, so we can use a triplet of 0/1 to show what they
+want. We can encode the answer as”I don’t know” <span class="math inline">\(\mapsto\)</span> <span class="math inline">\(X\)</span>, “no” <span class="math inline">\(\mapsto\)</span> <span class="math inline">\(0\)</span>, “yes” <span class="math inline">\(\mapsto\)</span> <span class="math inline">\(1\)</span>. Putting it all together, the first
+form the joke above is <span class="math display">\[j_{AND}(1, 1, 1)
+=  \{X, X, 1\}\]</span></p>
+<p>The other 7 outcomes of this form of the joke are: <span class="math display">\[j_{AND}(0, 0, 0) =  \{0, 0, 0\}\]</span> <span class="math display">\[j_{AND}(0, 0, 1) =  \{0, 0, 0\}\]</span> <span class="math display">\[j_{AND}(0, 1, 0) =  \{0, 0, 0\}\]</span> <span class="math display">\[j_{AND}(0, 1, 1) =  \{0, 0, 0\}\]</span> <span class="math display">\[j_{AND}(1, 0, 0) =  \{X, 0, 0\}\]</span> <span class="math display">\[j_{AND}(1, 0, 1) =  \{X, 0, 0\}\]</span> <span class="math display">\[j_{AND}(1, 1, 0) =  \{X, X, 0\}\]</span> The
+number of different ways <span class="math inline">\(j_{AND}\)</span>
+can be answered, <span class="math inline">\(N_{AND}\)</span>, is 4:
+<span class="math inline">\(\{0, 0, 0\}, \{X, 0, 0\} \{X, X, 0\}, \{X,
+X, 1\}\)</span>.</p>
 </div>
 </div>
 </div>
