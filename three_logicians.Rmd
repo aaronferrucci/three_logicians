@@ -15,7 +15,6 @@ output:
 -   *Bertrand: "I don't know"*
 -   *Claude: "Yes!"*
 
-
 ### Explanation
 
 How does this work? Each logician really does want a beer, but doesn't know what the others want. If the bartender's question is taken literally ("do **all** of you want a beer), no logician knows the answer - at first. (On other hand, if any of the logicians didn't want a beer, he or she could answer,"no".) After Ada and Bertrand give their "I don't know" answers (thus - they do want a beer), Claude can give a definite answer.
@@ -24,8 +23,7 @@ How does this work? Each logician really does want a beer, but doesn't know what
 
 #### Forms of the Joke
 
-There are other forms of this joke, depending on the bartender's question.
-An alternative, equally funny, but less jolly form of the joke is:
+There are other forms of this joke, depending on the bartender's question. An alternative, equally funny, but less jolly form of the joke is:
 
 *Three logicians walk into a bar. The bartender asks, "do any of you want a beer?"*
 
@@ -45,8 +43,15 @@ Here's a third form of the joke:
 
 So funny!
 
+The bartender could also ask some less bartenderly questions, like "does A want a beer, and does B not want a beer, and does C want a beer?" How many bartender questions are there?
 
-How many jokes are there? (How many different questions can the bartender ask?)
+To visualize the answer, consider the following table:
+
+```{r echo=F}
+library(knitr)
+joke_map <- data.frame(A=c(0, 0, 0, 0, 1, 1, 1, 1), B=rep(c(0, 0, 1, 1), 2), C=rep(c(0, 1), 4), Answer=rep(c('yes or no'), 8))
+kable(joke_map, align='r')
+```
 
 #### Logicians' Desires
 
@@ -54,15 +59,6 @@ Our three logicians may or may not want a beer; 3 logicians and 2 options means 
 
 #### Interlude: Notation
 
-For shorthand, let's say the "Do you wall want a beer" joke is $j_{AND}$; "Do any of you want a beer?" is $j_{OR}$, and "Do an odd number of you want a beer, $j_{XOR}$. The logicians' beer/no-beer choice is 1 for beer, 0 for no-beer, and there are three of them, so we can use a triplet of 0/1 to show what they want. We can encode the answer as "I don't know" $\mapsto$ $X$, "no" $\mapsto$ $0$, "yes" $\mapsto$ $1$. Putting it all together, the first form the joke above is
-$$j_{AND}(1, 1, 1) =  \{X, X, 1\}$$
+For shorthand, let's say the "Do you wall want a beer" joke is $j_{AND}$; "Do any of you want a beer?" is $j_{OR}$, and "Do an odd number of you want a beer, $j_{XOR}$. The logicians' beer/no-beer choice is 1 for beer, 0 for no-beer, and there are three of them, so we can use a triplet of 0/1 to show what they want. We can encode the answer as"I don't know" $\mapsto$ $X$, "no" $\mapsto$ $0$, "yes" $\mapsto$ $1$. Putting it all together, the first form the joke above is $$j_{AND}(1, 1, 1) =  \{X, X, 1\}$$
 
-The other 7 outcomes of this form of the joke are:
-$$j_{AND}(0, 0, 0) =  \{0, 0, 0\}$$
-$$j_{AND}(0, 0, 1) =  \{0, 0, 0\}$$
-$$j_{AND}(0, 1, 0) =  \{0, 0, 0\}$$
-$$j_{AND}(0, 1, 1) =  \{0, 0, 0\}$$
-$$j_{AND}(1, 0, 0) =  \{X, 0, 0\}$$
-$$j_{AND}(1, 0, 1) =  \{X, 0, 0\}$$
-$$j_{AND}(1, 1, 0) =  \{X, X, 0\}$$
-The number of different ways $j_{AND}$ can be answered, $N_{AND}$, is 4: $\{0, 0, 0\}, \{X, 0, 0\}, \{X, X, 0\}, \{X, X, 1\}$.
+The other 7 outcomes of this form of the joke are: $$j_{AND}(0, 0, 0) =  \{0, 0, 0\}$$ $$j_{AND}(0, 0, 1) =  \{0, 0, 0\}$$ $$j_{AND}(0, 1, 0) =  \{0, 0, 0\}$$ $$j_{AND}(0, 1, 1) =  \{0, 0, 0\}$$ $$j_{AND}(1, 0, 0) =  \{X, 0, 0\}$$ $$j_{AND}(1, 0, 1) =  \{X, 0, 0\}$$ $$j_{AND}(1, 1, 0) =  \{X, X, 0\}$$ The number of different ways $j_{AND}$ can be answered, $N_{AND}$, is 4: $\{0, 0, 0\}, \{X, 0, 0\}, \{X, X, 0\}, \{X, X, 1\}$.
