@@ -57,8 +57,7 @@ levelplot(
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
   xlab="respondent",
   ylab="want beer?",
-  #colorkey=NULL,
-  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes"))),
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   scales=list(
     x=list(at=1:3, labels=c("A", "B", "C")),
     y=list(at=1:8, labels=c(
