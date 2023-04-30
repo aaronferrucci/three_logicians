@@ -5,6 +5,10 @@ output:
     df_print: paged
 ---
 
+```{r echo=F}
+library(lattice)
+library(latticeExtra)
+```
 # Intro
 
 ### The Joke
@@ -43,15 +47,70 @@ Here's a third form of the joke:
 
 So funny!
 
-The bartender could also ask some less bartenderly questions, like "does A want a beer, and does B not want a beer, and does C want a beer?" How many bartender questions are there?
+The bartender could also ask some less bartenderly questions, like "does A want a beer, and does B not want a beer, and does C want a beer?" How many bartender questions are there? Well... 256.
 
-To visualize the answer, consider the following table:
-
+To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known. 
 ```{r echo=F}
-library(knitr)
-joke_map <- data.frame(A=c(0, 0, 0, 0, 1, 1, 1, 1), B=rep(c(0, 0, 1, 1), 2), C=rep(c(0, 1), 4), Answer=rep(c('yes or no'), 8))
-kable(joke_map, align='r')
+dat <- data.frame(
+  expand.grid(x=c("A yes B no", "A yes B yes", "A no B yes", "A no B no"), y=c("C no", "C yes")),
+  value=c(0, 0, 0, 0, 0, 1, 0, 0)+1,
+  source=c("no", "no", "no", "no", "no", "yes", "no", "no")
+)
+lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2))
+xp <- xyplot(y ~ x, data=dat,
+  panel = function(y, x, ...) {
+    ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+      fontfamily = "HersheySans")
+  }
+  )
+
+p <- lp + xp
+print(p)
 ```
+
+And here's "do any of you want a beer?":
+```{r echo=F}
+dat <- data.frame(
+  expand.grid(x=c("A yes B no", "A yes B yes", "A no B yes", "A no B no"), y=c("C no", "C yes")),
+  value=c(1, 1, 1, 0, 1, 1, 1, 1)+1,
+  source=c("yes", "yes", "yes", "no", "yes", "yes", "yes", "yes")
+)
+lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2))
+xp <- xyplot(y ~ x, data=dat,
+  panel = function(y, x, ...) {
+    ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+      fontfamily = "HersheySans")
+  }
+  )
+
+p <- lp + xp
+print(p)
+```
+
+Last example, "do an odd number of you want a beer?":
+```{r echo=F}
+dat <- data.frame(
+  expand.grid(x=c("A yes B no", "A yes B yes", "A no B yes", "A no B no"), y=c("C no", "C yes")),
+  value=c(1, 0, 1, 0, 0, 1, 0, 1)+1,
+  source=c("yes", "no", "yes", "no", "no", "yes", "no", "yes")
+)
+lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2))
+xp <- xyplot(y ~ x, data=dat,
+  panel = function(y, x, ...) {
+    ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+      fontfamily = "HersheySans")
+  }
+  )
+
+p <- lp + xp
+print(p)
+```
+
+Each arrangement of the plot has 8 squares that can be "yes" or "no". So the number of questions is  $2^{8} = 256$.
+
 
 #### Logicians' Desires
 
