@@ -47,9 +47,10 @@ Here's a third form of the joke:
 
 So funny!
 
+#### Counting the Jokes
 The bartender could also ask some less bartenderly questions, like "does A want a beer, and does B not want a beer, and does C want a beer?" How many bartender questions are there? Well... 256.
 
-To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known. 
+To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known.
 ```{r echo=F}
 dat <- data.frame(
   expand.grid(x=c("A yes B no", "A yes B yes", "A no B yes", "A no B no"), y=c("C no", "C yes")),
@@ -111,10 +112,42 @@ print(p)
 
 Each arrangement of the plot has 8 squares that can be "yes" or "no". So the number of questions is  $2^{8} = 256$.
 
-
-#### Logicians' Desires
+#### Effect of the Need for Beer
 
 Our three logicians may or may not want a beer; 3 logicians and 2 options means there are ${2}^{3}$ = `r 2**3` ways the joke could unfold. But! Some of these outcomes are identical. For example, if it's "do you all want a beer?" and A doesn't want a beer, the answers are "no", "no", and "no", no matter what B and C want. If A wants a beer but B doesn't, the answers are "I don't know", "no", and "no", even if C wants a beer.
+
+Here's a plot showing all 8 possible joke outcomes.
+```{r echo=F}
+# joke result, "and" form, per logician desire
+# the "backwards" row/col numbers make
+# the data match the input format
+m <- matrix(nrow=3, ncol=8, data=c(
+   0, -1, -1,  # 100
+   0,  0, -1,  # 110
+  -1, -1, -1,  # 010
+  -1, -1, -1,  # 000
+   0, -1, -1,  # 101
+   0,  0,  1,  # 111
+  -1, -1, -1,  # 011
+  -1, -1, -1   # 001
+))
+
+levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  xlab="answers",
+  ylab="want beer?",
+  #colorkey=NULL,
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes"))),
+  scales=list(
+    x=list(at=1:3, labels=c("A", "B", "C")),
+    y=list(at=1:8, labels=c(
+      "A yes B no C no", "A yes B yes C no", "A no B yes C no", "A no B no C no",
+      "A yes B no C yes", "A yes B yes C yes", "A no B yes C yes", "A no B no C yes"
+    ))
+  )
+)
+```
 
 #### Interlude: Notation
 
