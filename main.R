@@ -51,18 +51,19 @@ m <- matrix(nrow=3, ncol=8, data=c(
   -1, -1, -1,  # 011
   -1, -1, -1   # 001
 ))
+
 levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  xlab="answers",
+  xlab="respondent",
   ylab="want beer?",
   #colorkey=NULL,
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes"))),
   scales=list(
     x=list(at=1:3, labels=c("A", "B", "C")),
     y=list(at=1:8, labels=c(
-      "A yes B no C no", "A yes B yes C no", "A no B yes C no", "A no B no C no",
-      "A yes B no C yes", "A yes B yes C yes", "A no B yes C yes", "A no B no C yes"
+      "A:yes B:no C:no", "A:yes B:yes C:no", "A:no B:yes C:no", "A:no B:no C:no",
+      "A:yes B:no C:yes", "A:yes B:yes C:yes", "A:no B:yes C:yes", "A:no B:no C:yes"
     ))
   )
 )
