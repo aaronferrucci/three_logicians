@@ -52,16 +52,21 @@ The bartender could also ask some less bartenderly questions, like "does A want 
 
 To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known.
 ```{r echo=F}
-dat <- data.frame(
+datAND <- data.frame(
   expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
-  value=c(0, 0, 0, 0, 0, 1, 0, 0)+1,
+  value=c(0, 0, 0, 0, 0, 1, 0, 0),
   source=c("no", "no", "no", "no", "no", "yes", "no", "no")
 )
-lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
-  col.regions=colorRampPalette(colors=c("red", "green"))(2))
-xp <- xyplot(y ~ x, data=dat,
+lp <- levelplot(
+  value ~ x+y,
+  data=datAND,
+  xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2)
+)
+xp <- xyplot(y ~ x,
+  data=datAND,
   panel = function(y, x, ...) {
-    ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+    ltext(x = x, y = y, labels = datAND$source, cex = 1, font = 2,
       fontfamily = "HersheySans")
   }
   )
@@ -72,16 +77,22 @@ print(p)
 
 And here's "do any of you want a beer?":
 ```{r echo=F}
-dat <- data.frame(
+datOR <- data.frame(
   expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
-  value=c(1, 1, 1, 0, 1, 1, 1, 1)+1,
+  value=c(1, 1, 1, 0, 1, 1, 1, 1),
   source=c("yes", "yes", "yes", "no", "yes", "yes", "yes", "yes")
 )
-lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
-  col.regions=colorRampPalette(colors=c("red", "green"))(2))
-xp <- xyplot(y ~ x, data=dat,
+lp <- levelplot(
+  value ~ x+y,
+  data=datOR,
+  xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2)
+)
+xp <- xyplot(
+  y ~ x,
+  data=datOR,
   panel = function(y, x, ...) {
-    ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+    ltext(x = x, y = y, labels = datOR$source, cex = 1, font = 2,
       fontfamily = "HersheySans")
   }
   )
@@ -92,16 +103,22 @@ print(p)
 
 Last example, "do an odd number of you want a beer?":
 ```{r echo=F}
-dat <- data.frame(
+datXOR <- data.frame(
   expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
-  value=c(1, 0, 1, 0, 0, 1, 0, 1)+1,
+  value=c(1, 0, 1, 0, 0, 1, 0, 1),
   source=c("yes", "no", "yes", "no", "no", "yes", "no", "yes")
 )
-lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
-  col.regions=colorRampPalette(colors=c("red", "green"))(2))
-xp <- xyplot(y ~ x, data=dat,
+lp <- levelplot(
+  value ~ x+y,
+  data=datXOR,
+  xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2)
+)
+xp <- xyplot(
+  y ~ x,
+  data=datXOR,
   panel = function(y, x, ...) {
-    ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+    ltext(x = x, y = y, labels = datXOR$source, cex = 1, font = 2,
       fontfamily = "HersheySans")
   }
   )
@@ -135,6 +152,7 @@ m <- matrix(nrow=3, ncol=8, data=c(
 levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  caption="foo",
   xlab="respondent",
   ylab="want beer?",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
