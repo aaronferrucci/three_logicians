@@ -52,6 +52,8 @@ The bartender could also ask some less bartenderly questions, like "does A want 
 
 To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known.
 ```{r echo=F}
+# to do: add A, B, C booleans, calculate x, y, value, source from that + 'AND' function
+# think about including the 'AND' function in the data. Means I need a list? or a class?
 datAND <- data.frame(
   expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
   value=c(0, 0, 0, 0, 0, 1, 0, 0),
