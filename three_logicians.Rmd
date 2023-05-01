@@ -61,6 +61,7 @@ lp <- levelplot(
   value ~ x+y,
   data=datAND,
   xlab=NULL, ylab=NULL, colorkey=NULL,
+  aspect="iso",
   col.regions=colorRampPalette(colors=c("red", "green"))(2)
 )
 xp <- xyplot(y ~ x,
@@ -86,6 +87,7 @@ lp <- levelplot(
   value ~ x+y,
   data=datOR,
   xlab=NULL, ylab=NULL, colorkey=NULL,
+  aspect="iso",
   col.regions=colorRampPalette(colors=c("red", "green"))(2)
 )
 xp <- xyplot(
@@ -112,6 +114,7 @@ lp <- levelplot(
   value ~ x+y,
   data=datXOR,
   xlab=NULL, ylab=NULL, colorkey=NULL,
+  aspect="iso",
   col.regions=colorRampPalette(colors=c("red", "green"))(2)
 )
 xp <- xyplot(
