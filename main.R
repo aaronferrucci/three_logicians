@@ -20,10 +20,10 @@ p <- levelplot(
 
 dat <- data.frame(
   expand.grid(x=c("AB'", "AB", "A'B", "A'B'"), y=c("C'", "C")),
-  value=c(0, 0, 0, 0, 0, 1, 0, 0)+1,
+  value=c(0, 0, 0, 0, 0, 1, 0, 0),
   source=c(0, 0, 0, 0, 0, 1, 0, 0)
 )
-lp <- levelplot(value ~ x+y, data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
+lp <- levelplot(value ~ x+y, aspect="iso", data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
   col.regions=colorRampPalette(colors=c("red", "green"))(2))
 xp <- xyplot(y ~ x, data=dat,
   panel = function(y, x, ...) {
