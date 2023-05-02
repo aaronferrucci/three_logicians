@@ -18,19 +18,32 @@ p <- levelplot(
 )
 # print(p)
 
+and3 <- function(a, b, c) {
+  return(bitwAnd(bitwAnd(a, b), c))
+}
 dat <- data.frame(
   # expand.grid(x=c("AB'", "AB", "A'B", "A'B'"), y=c("C'", "C")),
   A=c(1, 1, 0, 0, 1, 1, 0, 0),
   B=c(0, 1, 1, 0, 0, 1, 1, 0),
-  C=c(0, 0, 0, 0, 1, 1, 1, 1),
-  value=c(0, 0, 0, 0, 0, 1, 0, 0),
-  source=c(0, 0, 0, 0, 0, 1, 0, 0)
+  C=c(0, 0, 0, 0, 1, 1, 1, 1)
+  # value=c(0, 0, 0, 0, 0, 1, 0, 0),
+  # source=c("no", "no", "no", "no", "no", "yes", "no", "no")
 )
-dat$y <- factor(ifelse(dat$C == 1, "C", "C'"), levels=c("C'", "C"))
-dat$x <- factor(paste0(ifelse(dat$A == 1, "A", "A'"), ifelse(dat$B == 1, "B", "B'")), levels=c("AB'", "AB", "A'B", "A'B'"))
+dat$value <- ifelse(and3(dat$A, dat$B, dat$C), 1, 0)
+dat$source <- ifelse(dat$value, "yes", "no")
+dat$y <- factor(ifelse(dat$C == 1, "C:yes", "C:no"), levels=c("C:no", "C:yes"))
+dat$x <- factor(
+  paste0(ifelse(dat$A == 1, "A:yes ", "A:no "), ifelse(dat$B == 1, "B:yes", "B:no")),
+  levels=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no")
+)
 
-lp <- levelplot(value ~ x+y, aspect="iso", data=dat, xlab=NULL, ylab=NULL, colorkey=NULL,
-  col.regions=colorRampPalette(colors=c("red", "green"))(2))
+lp <- levelplot(
+  value ~ x+y,
+  aspect="iso",
+  data=dat,
+  xlab=NULL, ylab=NULL, colorkey=NULL,
+  col.regions=colorRampPalette(colors=c("red", "green"))(2)
+)
 xp <- xyplot(y ~ x, data=dat,
   panel = function(y, x, ...) {
     ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
