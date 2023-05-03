@@ -18,24 +18,40 @@ p <- levelplot(
 )
 # print(p)
 
+get_question <- function(f) {
+  dat <- data.frame(
+    A=c(0, 1, 0, 1, 0, 1, 0, 1),
+    B=c(0, 0, 1, 1, 0, 0, 1, 1),
+    C=c(0, 0, 0, 0, 1, 1, 1, 1)
+  )
+  dat$value <- ifelse(f(dat$A, dat$B, dat$C), 1, 0)
+  dat$source <- ifelse(dat$value, "yes", "no")
+  dat$x <- factor(
+    paste0(ifelse(dat$A == 1, "A:yes ", "A:no "), ifelse(dat$B == 1, "B:yes", "B:no")),
+    levels=c("A:no B:no", "A:yes B:no", "A:no B:yes", "A:yes B:yes")
+  )
+  dat$y <- factor(ifelse(dat$C == 1, "C:yes", "C:no"), levels=c("C:no", "C:yes"))
+
+  return(dat)
+}
+
 and3 <- function(a, b, c) {
   return(bitwAnd(bitwAnd(a, b), c))
 }
+datAND <- get_question(function(a, b, c) bitwAnd(bitwAnd(a, b), c))
+
 dat <- data.frame(
-  # expand.grid(x=c("AB'", "AB", "A'B", "A'B'"), y=c("C'", "C")),
-  A=c(1, 1, 0, 0, 1, 1, 0, 0),
-  B=c(0, 1, 1, 0, 0, 1, 1, 0),
+  A=c(0, 1, 0, 1, 0, 1, 0, 1),
+  B=c(0, 0, 1, 1, 0, 0, 1, 1),
   C=c(0, 0, 0, 0, 1, 1, 1, 1)
-  # value=c(0, 0, 0, 0, 0, 1, 0, 0),
-  # source=c("no", "no", "no", "no", "no", "yes", "no", "no")
 )
 dat$value <- ifelse(and3(dat$A, dat$B, dat$C), 1, 0)
 dat$source <- ifelse(dat$value, "yes", "no")
-dat$y <- factor(ifelse(dat$C == 1, "C:yes", "C:no"), levels=c("C:no", "C:yes"))
 dat$x <- factor(
   paste0(ifelse(dat$A == 1, "A:yes ", "A:no "), ifelse(dat$B == 1, "B:yes", "B:no")),
-  levels=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no")
+  levels=c("A:no B:no", "A:yes B:no", "A:no B:yes", "A:yes B:yes")
 )
+dat$y <- factor(ifelse(dat$C == 1, "C:yes", "C:no"), levels=c("C:no", "C:yes"))
 
 lp <- levelplot(
   value ~ x+y,
