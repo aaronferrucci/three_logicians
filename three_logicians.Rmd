@@ -52,83 +52,61 @@ The bartender could also ask some less bartenderly questions, like "does A want 
 
 To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known.
 ```{r echo=F}
-# to do: add A, B, C booleans, calculate x, y, value, source from that + 'AND' function
-# think about including the 'AND' function in the data. Means I need a list? or a class?
-datAND <- data.frame(
-  expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
-  value=c(0, 0, 0, 0, 0, 1, 0, 0),
-  source=c("no", "no", "no", "no", "no", "yes", "no", "no")
-)
-lp <- levelplot(
-  value ~ x+y,
-  data=datAND,
-  xlab=NULL, ylab=NULL, colorkey=NULL,
-  aspect="iso",
-  col.regions=colorRampPalette(colors=c("red", "green"))(2)
-)
-xp <- xyplot(y ~ x,
-  data=datAND,
-  panel = function(y, x, ...) {
-    ltext(x = x, y = y, labels = datAND$source, cex = 1, font = 2,
-      fontfamily = "HersheySans")
-  }
+get_question <- function(f) {
+  dat <- data.frame(
+    A=c(0, 1, 0, 1, 0, 1, 0, 1),
+    B=c(0, 0, 1, 1, 0, 0, 1, 1),
+    C=c(0, 0, 0, 0, 1, 1, 1, 1)
+  )  
+  dat$value <- ifelse(f(dat$A, dat$B, dat$C), 1, 0)
+  dat$source <- ifelse(dat$value, "yes", "no")
+  dat$x <- factor(
+    paste0(ifelse(dat$A == 1, "A:yes ", "A:no "), ifelse(dat$B == 1, "B:yes", "B:no")),
+    levels=c("A:no B:no", "A:yes B:no", "A:no B:yes", "A:yes B:yes")
   )
+  dat$y <- factor(ifelse(dat$C == 1, "C:yes", "C:no"), levels=c("C:no", "C:yes"))
+  
+  return(dat)
+}
 
-p <- lp + xp
+plotit <- function(dat) {
+  lp <- levelplot(
+    value ~ x+y,
+    data=dat,
+    xlab=NULL, ylab=NULL, colorkey=NULL,
+    aspect="iso",
+    col.regions=colorRampPalette(colors=c("red", "green"))(2)
+  )
+  xp <- xyplot(y ~ x,
+    data=dat,
+    panel = function(y, x, ...) {
+      ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+        fontfamily = "HersheySans")
+    }
+  )
+  p <- lp + xp
+
+  return(p)
+}
+```
+
+```{r echo=F}
+datAND <- get_question(function(a, b, c) bitwAnd(bitwAnd(a, b), c))
+p <- plotit(datAND)
 print(p)
 ```
 
 And here's "do any of you want a beer?":
 ```{r echo=F}
-datOR <- data.frame(
-  expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
-  value=c(1, 1, 1, 0, 1, 1, 1, 1),
-  source=c("yes", "yes", "yes", "no", "yes", "yes", "yes", "yes")
-)
-lp <- levelplot(
-  value ~ x+y,
-  data=datOR,
-  xlab=NULL, ylab=NULL, colorkey=NULL,
-  aspect="iso",
-  col.regions=colorRampPalette(colors=c("red", "green"))(2)
-)
-xp <- xyplot(
-  y ~ x,
-  data=datOR,
-  panel = function(y, x, ...) {
-    ltext(x = x, y = y, labels = datOR$source, cex = 1, font = 2,
-      fontfamily = "HersheySans")
-  }
-  )
-
-p <- lp + xp
+datOR <- get_question(function(a, b, c) bitwOr(bitwOr(a, b), c))
+p <- plotit(datOR)
 print(p)
 ```
 
 Last example, "do an odd number of you want a beer?":
 ```{r echo=F}
-datXOR <- data.frame(
-  expand.grid(x=c("A:yes B:no", "A:yes B:yes", "A:no B:yes", "A:no B:no"), y=c("C:no", "C:yes")),
-  value=c(1, 0, 1, 0, 0, 1, 0, 1),
-  source=c("yes", "no", "yes", "no", "no", "yes", "no", "yes")
-)
-lp <- levelplot(
-  value ~ x+y,
-  data=datXOR,
-  xlab=NULL, ylab=NULL, colorkey=NULL,
-  aspect="iso",
-  col.regions=colorRampPalette(colors=c("red", "green"))(2)
-)
-xp <- xyplot(
-  y ~ x,
-  data=datXOR,
-  panel = function(y, x, ...) {
-    ltext(x = x, y = y, labels = datXOR$source, cex = 1, font = 2,
-      fontfamily = "HersheySans")
-  }
-  )
-
-p <- lp + xp
+datXOR <- get_question(function(a, b, c) bitwXor(bitwXor(a, b), c))
+p <- plotit(datXOR)
 print(p)
 ```
 
