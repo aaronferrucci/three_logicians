@@ -122,3 +122,34 @@ d <- t(matrix(sample(1:3, size=x*y, replace=T), nrow=y, ncol=x))
 levelplot(d,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
 )
+
+# function index plot
+dat <- data.frame(
+  A=c(0, 0, 0, 0, 1, 1, 1, 1),
+  B=c(0, 0, 1, 1, 0, 0, 1, 1),
+  C=c(0, 1, 0, 1, 0, 1, 0, 1)
+)  
+dat$y <- factor(ifelse(dat$A == 1, "A:yes", "A:no"), levels=c("A:no", "A:yes"))
+dat$x <- factor(
+  paste0(ifelse(dat$B == 1, "B:yes ", "B:no "), ifelse(dat$C == 1, "C:yes", "C:no")),
+  levels=c("B:no C:no", "B:no C:yes", "B:yes C:no", "B:yes C:yes")
+)
+dat$value <- 2**(0:7)
+dat$source <- as.character(dat$value)
+
+lp <- levelplot(
+  value ~ x+y,
+  data=dat,
+  xlab=NULL, ylab=NULL, colorkey=NULL,
+  aspect="iso",
+  col.regions=colorRampPalette(colors=c("white", "gray"))(256)
+)
+xp <- xyplot(y ~ x,
+             data=dat,
+             panel = function(y, x, ...) {
+               ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+                     fontfamily = "HersheySans")
+             }
+)
+lp + xp
+  

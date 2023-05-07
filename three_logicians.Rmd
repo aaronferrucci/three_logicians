@@ -150,6 +150,46 @@ levelplot(
 
 #### Interlude: Notation
 
-For shorthand, let's say the "Do you wall want a beer" joke is $j_{AND}$; "Do any of you want a beer?" is $j_{OR}$, and "Do an odd number of you want a beer, $j_{XOR}$. The logicians' beer/no-beer choice is 1 for beer, 0 for no-beer, and there are three of them, so we can use a triplet of 0/1 to show what they want. We can encode the answer as"I don't know" $\mapsto$ $X$, "no" $\mapsto$ $0$, "yes" $\mapsto$ $1$. Putting it all together, the first form the joke above is $$j_{AND}(1, 1, 1) =  \{X, X, 1\}$$
+Each of the 256 bartender questions can be assigned an index, from 0 to 255.
+Here's one way to make the assignments: assign a value to each of the 8 cells
+of the plot; the function's index value is the sum of all cell values where
+the function output is "yes":
 
-The other 7 outcomes of this form of the joke are: $$j_{AND}(0, 0, 0) =  \{0, 0, 0\}$$ $$j_{AND}(0, 0, 1) =  \{0, 0, 0\}$$ $$j_{AND}(0, 1, 0) =  \{0, 0, 0\}$$ $$j_{AND}(0, 1, 1) =  \{0, 0, 0\}$$ $$j_{AND}(1, 0, 0) =  \{X, 0, 0\}$$ $$j_{AND}(1, 0, 1) =  \{X, 0, 0\}$$ $$j_{AND}(1, 1, 0) =  \{X, X, 0\}$$ The number of different ways $j_{AND}$ can be answered, $N_{AND}$, is 4: $\{0, 0, 0\}, \{X, 0, 0\}, \{X, X, 0\}, \{X, X, 1\}$.
+```{r echo=F}
+dat <- data.frame(
+  A=c(0, 0, 0, 0, 1, 1, 1, 1),
+  B=c(0, 0, 1, 1, 0, 0, 1, 1),
+  C=c(0, 1, 0, 1, 0, 1, 0, 1)
+)  
+dat$y <- factor(ifelse(dat$A == 1, "A:yes", "A:no"), levels=c("A:no", "A:yes"))
+dat$x <- factor(
+  paste0(ifelse(dat$B == 1, "B:yes ", "B:no "), ifelse(dat$C == 1, "C:yes", "C:no")),
+  levels=c("B:no C:no", "B:no C:yes", "B:yes C:no", "B:yes C:yes")
+)
+dat$value <- 2**(0:7)
+dat$source <- as.character(dat$value)
+
+lp <- levelplot(
+  value ~ x+y,
+  data=dat,
+  xlab=NULL, ylab=NULL, colorkey=NULL,
+  aspect="iso",
+  col.regions=colorRampPalette(colors=c("white", "gray"))(256)
+)
+xp <- xyplot(y ~ x,
+             data=dat,
+             panel = function(y, x, ...) {
+               ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+                     fontfamily = "HersheySans")
+             }
+)
+lp + xp
+```
+
+The bartender question, "do you all want a beer" is the one with index 128; for 
+shorthand let's call it $j_{128}$. Likewise, "do any of you want a beer" is $j_{1}$, 
+"do an odd number of you want a beer": $j_{150}$.
+  
+The logicians' beer/no-beer choice is 1 for beer, 0 for no-beer, and there are three of them, so we can use a triplet of 0/1 to show what they want. We can encode the answer as"I don't know" $\mapsto$ $X$, "no" $\mapsto$ $0$, "yes" $\mapsto$ $1$. Putting it all together, the first form the joke above is $$j_{128}(1, 1, 1) =  \{X, X, 1\}$$
+
+The other 7 outcomes of this form of the joke are: $$j_{128}(0, 0, 0) =  \{0, 0, 0\}$$ $$j_{128}(0, 0, 1) =  \{0, 0, 0\}$$ $$j_{128}(0, 1, 0) =  \{0, 0, 0\}$$ $$j_{128}(0, 1, 1) =  \{0, 0, 0\}$$ $$j_{128}(1, 0, 0) =  \{X, 0, 0\}$$ $$j_{128}(1, 0, 1) =  \{X, 0, 0\}$$ $$j_{128}(1, 1, 0) =  \{X, X, 0\}$$ The number of different ways $j_{128}$ can be answered, $N_{128}$, is 4: $\{0, 0, 0\}, \{X, 0, 0\}, \{X, X, 0\}, \{X, X, 1\}$.
