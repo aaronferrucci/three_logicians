@@ -108,3 +108,17 @@ dat <- data.frame(
   value=c(0, 0, 0, 0, 0, 1, 0, 0)+1,
   source=c(0, 0, 0, 0, 0, 1, 0, 0)
 )
+
+# mockup of the entire joke in a single plot
+# there are 256 bartender questions, 8 logician desires, and 3 output steps
+# 256 * 8 * 3 = 6144
+# can be shown in a square grid of 2*32=64 rows, 3*32=96 columns
+# (2*32 * 3*32 = 6144)
+# if I use an 8 row, 3 column arrangement for each joke, that's 32 jokes
+# across the columns, 8 jokes down the rows.
+x <- 2*32
+y <- 3*32
+d <- t(matrix(sample(1:3, size=x*y, replace=T), nrow=y, ncol=x))
+levelplot(d,
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+)
