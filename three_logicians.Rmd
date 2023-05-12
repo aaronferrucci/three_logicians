@@ -52,13 +52,14 @@ The bartender could also ask some less bartenderly questions, like "does A want 
 
 To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known.
 ```{r echo=F}
-get_question <- function(f) {
+# question synthesis by index
+get_question <- function(index) {
   dat <- data.frame(
     A=c(0, 0, 0, 0, 1, 1, 1, 1),
     B=c(0, 0, 1, 1, 0, 0, 1, 1),
     C=c(0, 1, 0, 1, 0, 1, 0, 1)
-  )  
-  dat$value <- ifelse(f(dat$A, dat$B, dat$C), 1, 0)
+  )
+  dat$value <- ifelse(bitwAnd(2**(0:7), index), 1, 0)
   dat$source <- ifelse(dat$value, "yes", "no")
   dat$y <- factor(ifelse(dat$A == 1, "A:yes", "A:no"), levels=c("A:no", "A:yes"))
   dat$x <- factor(
@@ -90,21 +91,21 @@ plotit <- function(dat) {
 ```
 
 ```{r echo=F}
-datAND <- get_question(function(a, b, c) bitwAnd(bitwAnd(a, b), c))
+datAND <- get_question(128)
 p <- plotit(datAND)
 print(p)
 ```
 
 And here's "do any of you want a beer?":
 ```{r echo=F}
-datOR <- get_question(function(a, b, c) bitwOr(bitwOr(a, b), c))
+datOR <- get_question(1)
 p <- plotit(datOR)
 print(p)
 ```
 
 Last example, "do an odd number of you want a beer?":
 ```{r echo=F}
-datXOR <- get_question(function(a, b, c) bitwXor(bitwXor(a, b), c))
+datXOR <- get_question(150)
 p <- plotit(datXOR)
 print(p)
 ```
@@ -160,7 +161,7 @@ dat <- data.frame(
   A=c(0, 0, 0, 0, 1, 1, 1, 1),
   B=c(0, 0, 1, 1, 0, 0, 1, 1),
   C=c(0, 1, 0, 1, 0, 1, 0, 1)
-)  
+)
 dat$y <- factor(ifelse(dat$A == 1, "A:yes", "A:no"), levels=c("A:no", "A:yes"))
 dat$x <- factor(
   paste0(ifelse(dat$B == 1, "B:yes ", "B:no "), ifelse(dat$C == 1, "C:yes", "C:no")),
