@@ -16,12 +16,23 @@ get_question <- function(index) {
 }
 
 plotit <- function(dat) {
+  # build the palette. Special casing is needed when both of "no", "yes" are
+  # not present.
+  colors <- c()
+  if ("no" %in% dat$source) {
+    colors <- append(colors, "red")
+  }
+  if ("yes" %in% dat$source) {
+    colors <- append(colors, "green")
+  }
+  uniques <- length(unique(dat$source))
+
   lp <- levelplot(
     value ~ x+y,
     data=dat,
     xlab=NULL, ylab=NULL, colorkey=NULL,
     aspect="iso",
-    col.regions=colorRampPalette(colors=c("red", "green"))(2)
+    col.regions=colorRampPalette(colors=colors)(uniques)
   )
   xp <- xyplot(y ~ x,
                data=dat,

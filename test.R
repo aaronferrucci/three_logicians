@@ -156,3 +156,6 @@ lp + xp
 
 source("utils.R")
 
+dat <- get_question(0)
+p <- plotit(dat)
+print(p)
