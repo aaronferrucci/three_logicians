@@ -156,6 +156,12 @@ lp + xp
 
 source("utils.R")
 
-dat <- get_question(0)
+dat <- get_question(128)
 p <- plotit(dat)
 print(p)
+
+# This monstrosity is 'ansA': A's response, encoded as -1 (no), 0 (I don't know), 1 (yes)
+c(
+ifelse(rep(length(unique(dat[dat$A == 0,]$value)) == 1, 4), ifelse(dat[dat$A == 0,]$value[1] == 1, 1, -1), rep(0, 4)),
+ifelse(rep(length(unique(dat[dat$A == 1,]$value)) == 1, 4), ifelse(dat[dat$A == 1,]$value[1] == 1, 1, -1), rep(0, 4))
+)
