@@ -63,7 +63,7 @@ print(p)
 
 And here's "do any of you want a beer?":
 ```{r echo=F}
-datOR <- get_question(1)
+datOR <- get_question(254)
 p <- plotit(datOR)
 print(p)
 ```
@@ -156,10 +156,10 @@ xp <- xyplot(y ~ x,
 lp + xp
 ```
 
-The bartender question, "do you all want a beer" is the one with index 128; for 
-shorthand let's call it $j_{128}$. Likewise, "do any of you want a beer" is $j_{1}$, 
+The bartender question, "do you all want a beer" is the one with index 128; for
+shorthand let's call it $j_{128}$. Likewise, "do any of you want a beer" is $j_{254}$,
 "do an odd number of you want a beer": $j_{150}$.
-  
+
 The logicians' beer/no-beer choice is 1 for beer, 0 for no-beer, and there are three of them, so we can use a triplet of 0/1 to show what they want. We can encode the answer as"I don't know" $\mapsto$ $X$, "no" $\mapsto$ $0$, "yes" $\mapsto$ $1$. Putting it all together, the first form the joke above is $$j_{128}(1, 1, 1) =  \{X, X, 1\}$$
 
 The other 7 outcomes of this form of the joke are: $$j_{128}(0, 0, 0) =  \{0, 0, 0\}$$ $$j_{128}(0, 0, 1) =  \{0, 0, 0\}$$ $$j_{128}(0, 1, 0) =  \{0, 0, 0\}$$ $$j_{128}(0, 1, 1) =  \{0, 0, 0\}$$ $$j_{128}(1, 0, 0) =  \{X, 0, 0\}$$ $$j_{128}(1, 0, 1) =  \{X, 0, 0\}$$ $$j_{128}(1, 1, 0) =  \{X, X, 0\}$$ The number of different ways $j_{128}$ can be answered, $N_{128}$, is 4: $\{0, 0, 0\}, \{X, 0, 0\}, \{X, X, 0\}, \{X, X, 1\}$.
