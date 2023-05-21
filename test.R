@@ -160,8 +160,40 @@ dat <- get_question(128)
 p <- plotit(dat)
 print(p)
 
-# This monstrosity is 'ansA': A's response, encoded as -1 (no), 0 (I don't know), 1 (yes)
-c(
-ifelse(rep(length(unique(dat[dat$A == 0,]$value)) == 1, 4), ifelse(dat[dat$A == 0,]$value[1] == 1, 1, -1), rep(0, 4)),
-ifelse(rep(length(unique(dat[dat$A == 1,]$value)) == 1, 4), ifelse(dat[dat$A == 1,]$value[1] == 1, 1, -1), rep(0, 4))
-)
+# Compute A's response, encoded as -1 (no), 0 (I don't know), 1 (yes)
+# A's response depends on A's own answer (dat$A) and the question (dat$value)
+get_answerA <- function(dat) {
+  ansA <-
+    c(
+      ifelse(
+        rep(
+          length(unique(dat[dat$A == 0,]$value)) == 1,
+          4
+        ),
+        ifelse(dat[dat$A == 0,]$value[1] == 1, 1, -1), rep(0, 4)
+      ),
+      ifelse(
+        rep(
+          length(unique(dat[dat$A == 1,]$value)) == 1,
+          4
+        ),
+        ifelse(dat[dat$A == 1,]$value[1] == 1, 1, -1), rep(0, 4)
+      )
+    )
+  return(ansA)
+}
+
+# tests
+library(RUnit)
+dat$ansA <- get_answerA(dat)
+checkEquals(c(-1, -1, -1, -1, 0, 0, 0, 0), dat$ansA, "ansA for 'and' (128)")
+
+# "any"
+dat <- get_question(254)
+dat$ansA <- get_answerA(dat)
+checkEquals(c(0, 0, 0, 0, 1, 1, 1, 1), dat$ansA, "ansA for 'any' (254)")
+
+# "odd number"
+dat <- get_question(150)
+dat$ansA <- get_answerA(dat)
+checkEquals(c(0, 0, 0, 0, 0, 0, 0, 0), dat$ansA, "ansA for 'xor' (150)")
