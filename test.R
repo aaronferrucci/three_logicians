@@ -183,8 +183,25 @@ get_answerA <- function(dat) {
   return(ansA)
 }
 
+get_answerB <- function(dat) {
+  ansB <-
+    c(
+      ifelse(dat$ansA != 0,
+        dat$ansA, # if ansA is known, propagate
+        5 # clearly wrong
+      )
+    )
+  return(ansB)
+}
+
 # tests
 library(RUnit)
+# "odd number"
+dat <- get_question(150)
+dat$ansA <- get_answerA(dat)
+checkEquals(c(0, 0, 0, 0, 0, 0, 0, 0), dat$ansA, "ansA for 'xor' (150)")
+
+dat <- get_question(128)
 dat$ansA <- get_answerA(dat)
 checkEquals(c(-1, -1, -1, -1, 0, 0, 0, 0), dat$ansA, "ansA for 'and' (128)")
 
@@ -193,7 +210,16 @@ dat <- get_question(254)
 dat$ansA <- get_answerA(dat)
 checkEquals(c(0, 0, 0, 0, 1, 1, 1, 1), dat$ansA, "ansA for 'any' (254)")
 
-# "odd number"
-dat <- get_question(150)
-dat$ansA <- get_answerA(dat)
-checkEquals(c(0, 0, 0, 0, 0, 0, 0, 0), dat$ansA, "ansA for 'xor' (150)")
+p <- plotit(dat)
+print(p)
+
+# Short Circuiting
+# For each dat entry, if A is held at its value, do all rows with that A value
+# have the same $value? This is kind of an odd thing in R - a dataframe entry
+# depends on multiple other dataframe entries. A for loop works; is there an
+# more R-idiomatic method?
+uniA <- c()
+for (row in 1:nrow(dat)) {
+  uniA <- append(uniA, ifelse(length(unique(dat[dat$A == dat$A[row],]$value)) == 1, T, F))
+}
+dat$uniA <- uniA
