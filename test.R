@@ -218,8 +218,20 @@ print(p)
 # have the same $value? This is kind of an odd thing in R - a dataframe entry
 # depends on multiple other dataframe entries. A for loop works; is there an
 # more R-idiomatic method?
-uniA <- c()
+dat <- get_question(128)
+dat$ansA <- get_answerA(dat)
+checkEquals(c(0, 0, 0, 0, 1, 1, 1, 1), dat$ansA, "ansA for 'any' (254)")
+
+p <- plotit(dat)
+print(p)
+ssA <- c()
 for (row in 1:nrow(dat)) {
-  uniA <- append(uniA, ifelse(length(unique(dat[dat$A == dat$A[row],]$value)) == 1, T, F))
+  ssA <- append(ssA, ifelse(length(unique(dat[dat$A == dat$A[row],]$value)) == 1, T, F))
 }
-dat$uniA <- uniA
+dat$ssA <- ssA
+
+ssAB <- c()
+for (row in 1:nrow(dat)) {
+  ssAB <- append(ssAB, dat$ssA[row] | ifelse(length(unique(dat[dat$A == dat$A[row] & dat$B == dat$B[row],]$value)) == 1, T, F))
+}
+dat$ssAB <- ssAB
