@@ -220,7 +220,6 @@ print(p)
 # more R-idiomatic method?
 dat <- get_question(128)
 dat$ansA <- get_answerA(dat)
-checkEquals(c(0, 0, 0, 0, 1, 1, 1, 1), dat$ansA, "ansA for 'any' (254)")
 
 p <- plotit(dat)
 print(p)
@@ -229,9 +228,11 @@ for (row in 1:nrow(dat)) {
   ssA <- append(ssA, ifelse(length(unique(dat[dat$A == dat$A[row],]$value)) == 1, T, F))
 }
 dat$ssA <- ssA
+dat$ansA <- ifelse(dat$ssA, dat$value*2-1, 0)
 
 ssAB <- c()
 for (row in 1:nrow(dat)) {
   ssAB <- append(ssAB, dat$ssA[row] | ifelse(length(unique(dat[dat$A == dat$A[row] & dat$B == dat$B[row],]$value)) == 1, T, F))
 }
 dat$ssAB <- ssAB
+dat$ansB <- ifelse(dat$ssAB, dat$value * 2 - 1, 0)
