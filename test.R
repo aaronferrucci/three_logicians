@@ -236,3 +236,14 @@ for (row in 1:nrow(dat)) {
 }
 dat$ssAB <- ssAB
 dat$ansB <- ifelse(dat$ssAB, dat$value * 2 - 1, 0)
+library(dplyr)
+ansC <- c()
+for (row in 1:nrow(dat)) {
+  ansC <- append(ansC, case_when(
+    dat$ansA[row] != 0 ~ dat$ansA[row],
+    dat$ansB[row] != 0 ~ dat$ansB[row],
+    length(unique(dat[dat$ansA == 0 & dat$ansB == 0 & dat$C == dat$C[row],]$value)) == 1 ~ dat$value[row]*2-1,
+    TRUE ~ 0
+  ))
+}
+dat$ansC <- ansC
