@@ -156,94 +156,28 @@ lp + xp
 
 source("utils.R")
 
-dat <- get_question(128)
+dat <- get_joke(128)
 p <- plotit(dat)
 print(p)
-
-# Compute A's response, encoded as -1 (no), 0 (I don't know), 1 (yes)
-# A's response depends on A's own answer (dat$A) and the question (dat$value)
-get_answerA <- function(dat) {
-  ansA <-
-    c(
-      ifelse(
-        rep(
-          length(unique(dat[dat$A == 0,]$value)) == 1,
-          4
-        ),
-        ifelse(dat[dat$A == 0,]$value[1] == 1, 1, -1), rep(0, 4)
-      ),
-      ifelse(
-        rep(
-          length(unique(dat[dat$A == 1,]$value)) == 1,
-          4
-        ),
-        ifelse(dat[dat$A == 1,]$value[1] == 1, 1, -1), rep(0, 4)
-      )
-    )
-  return(ansA)
-}
-
-get_answerB <- function(dat) {
-  ansB <-
-    c(
-      ifelse(dat$ansA != 0,
-        dat$ansA, # if ansA is known, propagate
-        5 # clearly wrong
-      )
-    )
-  return(ansB)
-}
 
 # tests
 library(RUnit)
 # "odd number"
-dat <- get_question(150)
-dat$ansA <- get_answerA(dat)
+dat <- get_joke(150)
 checkEquals(c(0, 0, 0, 0, 0, 0, 0, 0), dat$ansA, "ansA for 'xor' (150)")
+checkEquals(c(0, 0, 0, 0, 0, 0, 0, 0), dat$ansB, "ansB for 'xor' (150)")
+checkEquals(c(0, 0, 0, 0, 0, 0, 0, 0), dat$ansC, "ansC for 'xor' (150)")
 
-dat <- get_question(128)
-dat$ansA <- get_answerA(dat)
+dat <- get_joke(128)
 checkEquals(c(-1, -1, -1, -1, 0, 0, 0, 0), dat$ansA, "ansA for 'and' (128)")
+checkEquals(c(-1, -1, -1, -1, -1, -1, 0, 0), dat$ansB, "ansB for 'and' (128)")
+checkEquals(c(-1, -1, -1, -1, -1, -1, -1, 1), dat$ansC, "ansC for 'and' (128)")
 
 # "any"
-dat <- get_question(254)
-dat$ansA <- get_answerA(dat)
+dat <- get_joke(254)
 checkEquals(c(0, 0, 0, 0, 1, 1, 1, 1), dat$ansA, "ansA for 'any' (254)")
+checkEquals(c(0, 0, 1, 1, 1, 1, 1, 1), dat$ansB, "ansB for 'any' (254)")
+checkEquals(c(-1, 1, 1, 1, 1, 1, 1, 1), dat$ansC, "ansC for 'any' (254)")
 
 p <- plotit(dat)
 print(p)
-
-# Short Circuiting
-# For each dat entry, if A is held at its value, do all rows with that A value
-# have the same $value? This is kind of an odd thing in R - a dataframe entry
-# depends on multiple other dataframe entries. A for loop works; is there an
-# more R-idiomatic method?
-dat <- get_question(128)
-dat$ansA <- get_answerA(dat)
-
-p <- plotit(dat)
-print(p)
-ssA <- c()
-for (row in 1:nrow(dat)) {
-  ssA <- append(ssA, ifelse(length(unique(dat[dat$A == dat$A[row],]$value)) == 1, T, F))
-}
-dat$ssA <- ssA
-dat$ansA <- ifelse(dat$ssA, dat$value*2-1, 0)
-
-ssAB <- c()
-for (row in 1:nrow(dat)) {
-  ssAB <- append(ssAB, dat$ssA[row] | ifelse(length(unique(dat[dat$A == dat$A[row] & dat$B == dat$B[row],]$value)) == 1, T, F))
-}
-dat$ssAB <- ssAB
-dat$ansB <- ifelse(dat$ssAB, dat$value * 2 - 1, 0)
-library(dplyr)
-ansC <- c()
-for (row in 1:nrow(dat)) {
-  ansC <- append(ansC, case_when(
-    dat$ansA[row] != 0 ~ dat$ansA[row],
-    dat$ansB[row] != 0 ~ dat$ansB[row],
-    length(unique(dat[dat$ansA == 0 & dat$ansB == 0 & dat$C == dat$C[row],]$value)) == 1 ~ dat$value[row]*2-1,
-    TRUE ~ 0
-  ))
-}
-dat$ansC <- ansC
