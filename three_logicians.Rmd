@@ -15,6 +15,95 @@ library(latticeExtra)
 
 *Three logicians walk into a bar. The bartender asks, "Do you all want a beer?"*
 
+#### But First... A Lower-Level Scrutiny
+Before examining the canonical form of this joke, I think it's worthwhile to examine some of the lower-level components,
+and their implications. Consider:
+
+*A logician walks into a bar. The bartender asks, "Do you want a beer?*
+
+-   *Ada: "Yes!"*
+
+This is not funny, but it highlights this fact: Ada might not want a beer, and so the "punchline" could be
+
+-   *Ada: "No"*
+
+Here's the entirety of this "joke" in a single plot:
+
+```{r echo=F}
+m <- matrix(nrow=1, ncol=2, data=c(
+  -1,  # 0
+   1   # 1
+))
+
+levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  caption="foo",
+  xlab="respondent",
+  ylab="Do you want a beer?",
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+  scales=list(
+    x=list(at=1:1, labels=c("A")),
+    y=list(at=1:2, labels=c(
+      "A:no",
+      "A:yes"
+    ))
+  )
+)
+```
+
+#### Generalizing a bit...
+Our bartender could ask a different question: "Do you not want a beer"? To be
+really general, I'll allow two more questions: 1) "Is 1 equal to 1?"
+and 2) "Is 1 equal to 0?". Despite our logician's desire for a beer (or not),
+I am confident she will respect the bartender with a correct answer.
+
+In the plot I use this encoding of the "generalized question":
+0: "Is 1 equal to 0?"
+1: "Do you want a beer?"
+2: "Do you not want a beer?"
+3: "Is 1 equal to 1?"
+
+```{r echo=F}
+m <- matrix(nrow=1, ncol=8, data=c(
+  -1,  # 0
+  -1,  # 1
+  -1,  # 0
+   1,  # 1
+   1,  # 0
+  -1,  # 1
+   1,  # 0
+   1   # 1
+))
+
+levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  caption="foo",
+  xlab="respondent",
+  ylab="Generalized Question",
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+  scales=list(
+    alternating=1,
+    x=list(at=1:1, labels=c("A")),
+    y=list(at=1:8, labels=c(
+      "0? A:no ",
+      "0? A:yes",
+      "1? A:no ",
+      "1? A:yes",
+      "2? A:no ",
+      "2? A:yes",
+      "3? A:no ",
+      "3? A:yes"
+    ))
+  )
+)
+```
+
+### The Full Joke
+
+
+
 -   *Ada: "I don't know"*
 -   *Bertrand: "I don't know"*
 -   *Claude: "Yes!"*
