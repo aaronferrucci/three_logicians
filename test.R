@@ -66,8 +66,8 @@ xp <- xyplot(y ~ x, data=dat,
     ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
       fontfamily = "HersheySans")
     # panel.grid(h=1, v=3, x=2, y=4)
-    #panel.abline(h=c(1.5), from=1.5, to=2.5)
-    #panel.abline(v=c(1.5, 2.5, 3.5), from=0.5, to=2.5)
+    panel.abline(h=c(1.5), from=1.5, to=2.5)
+    panel.abline(v=c(1.5, 2.5, 3.5), from=0.5, to=2.5)
   }
   )
 

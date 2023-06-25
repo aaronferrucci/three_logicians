@@ -87,18 +87,98 @@ levelplot(
     alternating=1,
     x=list(at=1:1, labels=c("A")),
     y=list(at=1:8, labels=c(
-      "0? A:no ",
-      "0? A:yes",
-      "1? A:no ",
-      "1? A:yes",
-      "2? A:no ",
-      "2? A:yes",
-      "3? A:no ",
-      "3? A:yes"
+      "0=1? A:no ",
+      "0=1? A:yes",
+      "want a beer? A:no ",
+      "want a beer1? A:yes",
+      "do not want a beer? A:no ",
+      "do not want a beer? A:yes",
+      "1=1? A:no ",
+      "1=1? A:yes"
     ))
   )
 )
 ```
+
+#### Generalizing a bit...
+If we add one more logician, a new outcome appears: uncertainty. The basic "do you want a beer?"
+becomes "do you both want a beer?", with this outcome:
+
+```{r echo=F}
+m <- matrix(nrow=2, ncol=4, data=c(
+  -1, -1, # 00
+  -1, -1, # 01
+   0, -1, # 10
+   0,  1  # 11
+))
+
+levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  caption="foo",
+  xlab="respondent",
+  ylab="Do you both want a beer?",
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+  scales=list(
+    x=list(at=1:2, labels=c("A", "B")),
+    y=list(at=1:4, labels=c(
+      "A:no B:no",
+      "A:no B:yes",
+      "A:yes B:no",
+      "A:yes B:yes"
+    ))
+  )
+)
+```
+
+#### Generalizing a bit...
+How many questions can the bartender ask of two logicians? Any logician will know this at a young age, and I think you
+can find the answer online, spoiler alert, it's $2^{2^{2}} = 16$. One way to think about it: imagine a template for a
+2-input logic function, like so:
+```{r echo=F}
+m <- matrix(nrow=2, ncol=2, data=c(
+  "0/1", "0/1",
+  "0/1", "0/1"
+))
+
+m <- matrix(nrow=2, ncol=2, data=c(
+  0, 0,
+  0, 0
+))
+
+lp <- levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("white")),
+  caption="foo",
+  colorkey=F,
+  xlab="",
+  ylab="",
+  aspect="iso",
+  scales=list(
+    x=list(at=1:2, labels=c("A=0", "A=1")),
+    y=list(at=1:2, labels=c("B=0", "B=1"))
+  )
+)
+A <- c(F, T, F, T)
+B <- c(F, F, T, T)
+dat <- data.frame(
+  x=factor(ifelse(A, "A=1", "A=0"), levels=c("A=0", "A=1")),
+  y=factor(ifelse(B, "B=1", "B=0"), levels=c("B=0", "B=1")),
+  source=rep("0/1", 4)
+)
+xp <- xyplot(y ~ x,
+             data=dat,
+             panel = function(y, x, ...) {
+                panel.abline(v=1.5)
+                panel.abline(h=1.5)
+               ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+                     fontfamily = "HersheySans")
+             }
+)
+lp + xp
+```
+
+There are $2^2 = 4$ squares in the grid, for each possible combination of A and B. And each of the of the squares can be 0 or 1, so that's $2^4 = 16$ total possible functions. Voila!
 
 ### The Full Joke
 
