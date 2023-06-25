@@ -38,9 +38,9 @@ m <- matrix(nrow=1, ncol=2, data=c(
 levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  caption="foo",
+  main = list('Do You Want a Beer?', side=1, line=0.5),
   xlab="respondent",
-  ylab="Do you want a beer?",
+  ylab="A's Desire",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   scales=list(
     x=list(at=1:1, labels=c("A")),
@@ -58,12 +58,6 @@ really general, I'll allow two more questions: 1) "Is 1 equal to 1?"
 and 2) "Is 1 equal to 0?". Despite our logician's desire for a beer (or not),
 I am confident she will respect the bartender with a correct answer.
 
-In the plot I use this encoding of the "generalized question":
-0: "Is 1 equal to 0?"
-1: "Do you want a beer?"
-2: "Do you not want a beer?"
-3: "Is 1 equal to 1?"
-
 ```{r echo=F}
 m <- matrix(nrow=1, ncol=8, data=c(
   -1,  # 0
@@ -79,22 +73,22 @@ m <- matrix(nrow=1, ncol=8, data=c(
 levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  caption="foo",
+  main = list('Generalized Question', side=1, line=0.5),
   xlab="respondent",
-  ylab="Generalized Question",
+  ylab="Question/A and B's Desires",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   scales=list(
     alternating=1,
     x=list(at=1:1, labels=c("A")),
     y=list(at=1:8, labels=c(
-      "0=1? A:no ",
-      "0=1? A:yes",
-      "want a beer? A:no ",
-      "want a beer1? A:yes",
-      "do not want a beer? A:no ",
-      "do not want a beer? A:yes",
-      "1=1? A:no ",
-      "1=1? A:yes"
+      "0=1?/A:no ",
+      "0=1?/A:yes",
+      "want a beer?/A:no ",
+      "want a beer1?/A:yes",
+      "do not want a beer?/A:no ",
+      "do not want a beer?/A:yes",
+      "1=1?/A:no ",
+      "1=1?/A:yes"
     ))
   )
 )
@@ -115,9 +109,9 @@ m <- matrix(nrow=2, ncol=4, data=c(
 levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  caption="foo",
+  main = list("Do you both want a beer?", side=1, line=0.5),
   xlab="respondent",
-  ylab="Do you both want a beer?",
+  ylab="A and B's Desires",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   scales=list(
     x=list(at=1:2, labels=c("A", "B")),
@@ -130,6 +124,13 @@ levelplot(
   )
 )
 ```
+
+How to read this chart: choose a row, for example the top row ("A:yes B:yes").
+In this case A and B both want a beer: this is their desire, but doesn't necessarily
+indicate how they answer the question. Instead, the answers are in the grid, left to right: for the
+top row, the answers are "A: I don't know; B: Yes!"). With two logicians, I think
+we have enough complexity to see that humor could arise here, though not enough
+to definitely have humor.
 
 #### Generalizing a bit...
 How many questions can the bartender ask of two logicians? Any logician will know this at a young age, and I think you
