@@ -8,6 +8,7 @@ output:
 ```{r echo=F}
 library(lattice)
 library(latticeExtra)
+source("utils.R")
 ```
 # Intro
 
@@ -99,12 +100,8 @@ If we add one more logician, a new outcome appears: uncertainty. The basic "do y
 becomes "do you both want a beer?", with this outcome:
 
 ```{r echo=F}
-m <- matrix(nrow=2, ncol=4, data=c(
-  -1, -1, # 00
-  -1, -1, # 01
-   0, -1, # 10
-   0,  1  # 11
-))
+joke <- get_jokeAB(8)
+m <- to_matrix(joke)
 
 levelplot(
   m,
@@ -275,9 +272,6 @@ So funny!
 The bartender could also ask some less bartenderly questions, like "does A want a beer, and does B not want a beer, and does C want a beer?" How many bartender questions are there? Well... 256.
 
 To see why, consider this plot of the first question, "do you all want a beer"? The plot shows the final answer, if all logicians' desires were known.
-```{r echo=F}
-source("utils.R")
-```
 
 ```{r echo=F}
 datAND <- get_question(128)
