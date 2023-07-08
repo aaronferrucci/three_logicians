@@ -47,7 +47,7 @@ get_jokeAB <- function(index) {
 #    0,  1  # 11
 # ))
 #
-# ... and here's what the input data looks like for "AND, joke 8:
+# ... and here's what the input data looks like for joke 8, "AND":
 # > j$ansA
 # [1] -1 -1  0  0
 # > j$ansB
