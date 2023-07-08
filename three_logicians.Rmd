@@ -20,7 +20,7 @@ source("utils.R")
 Before examining the canonical form of this joke, I think it's worthwhile to examine some of the lower-level components,
 and their implications. Consider:
 
-*A logician walks into a bar. The bartender asks, "Do you want a beer?*
+*A logician walks into a bar. The bartender asks, "Do you want a beer?"*
 
 -   *Ada: "Yes!"*
 
@@ -54,8 +54,8 @@ levelplot(
 ```
 
 #### Generalizing a bit...
-Our bartender could ask a different question: "Do you not want a beer"? To be
-really general, I'll allow two more questions: 1) "Is 1 equal to 1?"
+Our bartender could ask a different question: "Do you not want a beer"? And to
+be really complete, there are two more questions: 1) "Is 1 equal to 1?"
 and 2) "Is 1 equal to 0?". Despite our logician's desire for a beer (or not),
 I am confident she will respect the bartender with a correct answer.
 
@@ -76,7 +76,7 @@ levelplot(
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
   main = list('Generalized Question', side=1, line=0.5),
   xlab="respondent",
-  ylab="Question/A and B's Desires",
+  ylab="Question/A's Desire",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   scales=list(
     alternating=1,
@@ -96,7 +96,8 @@ levelplot(
 ```
 
 #### Generalizing a bit...
-If we add one more logician, a new outcome appears: uncertainty. The basic "do you want a beer?"
+If we add one more logician, a new outcome appears: uncertainty. Stepping back
+to the basic form, "do you want a beer?"
 becomes "do you both want a beer?", with this outcome:
 
 ```{r echo=F}
@@ -123,15 +124,15 @@ levelplot(
 ```
 
 How to read this chart: choose a row, for example the top row ("A:yes B:yes").
-In this case A and B both want a beer: this is their desire, but doesn't necessarily
-indicate how they answer the question. Instead, the answers are in the grid, left to right: for the
+In this case A and B both want a beer: these are their desires, and they determine
+how they answer the question. The answers are in the grid, left to right: for the
 top row, the answers are "A: I don't know; B: Yes!"). With two logicians, I think
 we have enough complexity to see that humor could arise here, though not enough
 to definitely have humor.
 
 #### Generalizing a bit...
 How many questions can the bartender ask of two logicians? Any logician will know this at a young age, and I think you
-can find the answer online, spoiler alert, it's $2^{2^{2}} = 16$. One way to think about it: imagine a template for a
+can find the answer online, spoiler alert, it's $2^{2^{2}} = 16$. Here's how to see it: imagine a template for a
 2-input logic function, like so:
 ```{r echo=F}
 m <- matrix(nrow=2, ncol=2, data=c(
