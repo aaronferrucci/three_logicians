@@ -6,8 +6,6 @@ output:
 ---
 
 ```{r echo=F}
-library(lattice)
-library(latticeExtra)
 source("utils.R")
 ```
 # Intro

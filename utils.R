@@ -1,3 +1,5 @@
+library(lattice)
+library(latticeExtra)
 library(dplyr)
 
 # 2-logician scenario
