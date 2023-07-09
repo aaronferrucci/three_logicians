@@ -181,3 +181,36 @@ checkEquals(c(-1, 1, 1, 1, 1, 1, 1, 1), dat$ansC, "ansC for 'any' (254)")
 
 p <- plotit(dat)
 print(p)
+
+# experiments with the complete 2-logician plot
+# 16 jokes, each with a 2-row, 4-col answer grid
+# arrange the jokes as 8-row, 2-col, for an 16-row 8-col result
+m <- matrix(nrow=0, ncol=8)
+for (row in 1:8) {
+  mc <- matrix(nrow=2, ncol=0)
+  for (col in 1:2) {
+    j <- row*col
+    m0 <- to_matrix(get_jokeAB(j))
+    mc <- cbind(mc, m0)
+
+  }
+  nrow(mc)
+  ncol(mc)
+
+  m <- rbind(m, mc)
+}
+levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  xlab="respondent",
+  ylab="want beer?",
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+  scales=list(
+    x=list(at=1:3, labels=c("A", "B", "C")),
+    y=list(at=1:8, labels=c(
+      "A:yes B:no C:no", "A:yes B:yes C:no", "A:no B:yes C:no", "A:no B:no C:no",
+      "A:yes B:no C:yes", "A:yes B:yes C:yes", "A:no B:yes C:yes", "A:no B:no C:yes"
+    ))
+  )
+)
+
