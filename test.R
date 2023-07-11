@@ -199,7 +199,8 @@ for (row in 1:8) {
 
   m <- rbind(m, mc)
 }
-levelplot(
+
+lp <- levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
   xlab="respondent",
@@ -211,6 +212,11 @@ levelplot(
       "A:yes B:no C:no", "A:yes B:yes C:no", "A:no B:yes C:no", "A:no B:no C:no",
       "A:yes B:no C:yes", "A:yes B:yes C:yes", "A:no B:yes C:yes", "A:no B:no C:yes"
     ))
-  )
+  ),
+  panel = function(...) {
+    panel.levelplot(...)
+    panel.abline(h=0:2 * 2 + 2.5, from=1.5, to=2.5)
+    panel.abline(v=0:7 * 2 + 2.5, from=1.5, to=2.5)
+  }
 )
 
