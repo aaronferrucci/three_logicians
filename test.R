@@ -186,36 +186,32 @@ print(p)
 # 16 jokes, each with a 2-row, 4-col answer grid
 # arrange the jokes as 8-row, 2-col, for an 16-row 8-col result
 m <- matrix(nrow=0, ncol=8)
-for (row in 1:8) {
+for (row in 0:7) {
   mc <- matrix(nrow=2, ncol=0)
-  for (col in 1:2) {
-    j <- row*col
+  for (col in 0:1) {
+    j <- col*8 + row
+    print(j)
     m0 <- to_matrix(get_jokeAB(j))
     mc <- cbind(mc, m0)
-
   }
-  nrow(mc)
-  ncol(mc)
 
   m <- rbind(m, mc)
 }
 
 lp <- levelplot(
   m,
+  main = list("2-Logician Joke", side=1, line=0.5),
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  xlab="respondent",
-  ylab="want beer?",
+  xlab="",
+  ylab="",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   scales=list(
-    x=list(at=1:3, labels=c("A", "B", "C")),
-    y=list(at=1:8, labels=c(
-      "A:yes B:no C:no", "A:yes B:yes C:no", "A:no B:yes C:no", "A:no B:no C:no",
-      "A:yes B:no C:yes", "A:yes B:yes C:yes", "A:no B:yes C:yes", "A:no B:no C:yes"
-    ))
+    x=list(at=0:7 * 2 + 1.5, labels=0:7),
+    y=list(at=c(2.5, 6.5), labels=c("0", "8"))
   ),
   panel = function(...) {
     panel.levelplot(...)
-    panel.abline(h=0:2 * 2 + 2.5, from=1.5, to=2.5)
+    panel.abline(h=4.5, from=1.5, to=2.5)
     panel.abline(v=0:7 * 2 + 2.5, from=1.5, to=2.5)
   }
 )
