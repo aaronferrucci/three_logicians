@@ -5,7 +5,7 @@ output:
     df_print: paged
 ---
 
-```{r echo=F}
+```{r echo=F, message=F}
 source("utils.R")
 ```
 # Intro
@@ -72,7 +72,7 @@ m <- matrix(nrow=1, ncol=8, data=c(
 levelplot(
   m,
   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  main = list('Generalized Question', side=1, line=0.5),
+  main = list('Generalized 1-Logician Joke', side=1, line=0.5),
   xlab="respondent",
   ylab="Question/A's Desire",
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
@@ -95,8 +95,8 @@ levelplot(
 
 #### Generalizing a bit...
 If we add one more logician, a new outcome appears: uncertainty. Stepping back
-to the basic form, "do you want a beer?"
-becomes "do you both want a beer?", with this outcome:
+to the basic form, "do you want a beer?",
+the joke becomes "do you both want a beer?", with this outcome:
 
 ```{r echo=F}
 joke <- get_jokeAB(8)
@@ -121,10 +121,20 @@ levelplot(
 )
 ```
 
-How to read this chart: choose a row, for example the top row ("A:yes B:yes").
-In this case A and B both want a beer: these are their desires, and they determine
-how they answer the question. The answers are in the grid, left to right: for the
-top row, the answers are "A: I don't know; B: Yes!"). With two logicians, I think
+```{css style settings, echo = FALSE}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 12px;
+    border-left: 5px solid #eee;
+}
+```
+
+> How to read this chart: choose a row, for example the top row ("A:yes B:yes").
+In this case A and B both want a beer. Their replies are in the grid, left to right: for the
+top row, the answers are "A: I don't know; B: Yes!").
+
+With two logicians, I think
 we have enough complexity to see that humor could arise here, though not enough
 to definitely have humor.
 
