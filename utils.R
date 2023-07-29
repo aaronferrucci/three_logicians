@@ -154,3 +154,30 @@ plotit <- function(dat) {
   return(p)
 }
 
+logicians_plot2 <- function(m, title) {
+  p <- levelplot(
+    m,
+    col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+    main = list(title, side=1, line=0.5),
+    xlab="respondent",
+    ylab="A and B's Desires",
+    colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+    panel = function(...) {
+      panel.levelplot(...)
+      panel.abline(h=(1:7 + 0.5), col=c("gray"))
+      panel.abline(v=1.5, col=c("gray"))
+    },
+    scales=list(
+      x=list(at=1:2, labels=c("A", "B")),
+      y=list(at=1:4, labels=c(
+        "A:no B:no",
+        "A:no B:yes",
+        "A:yes B:no",
+        "A:yes B:yes"
+      ))
+    )
+  )
+
+  return(p)
+}
+

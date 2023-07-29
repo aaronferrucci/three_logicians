@@ -15,8 +15,9 @@ source("utils.R")
 *Three logicians walk into a bar. The bartender asks, "Do you all want a beer?"*
 
 #### But First... A Lower-Level Scrutiny
-Before examining the canonical form of this joke, it's worthwhile to examine some of the lower-level components,
-and their implications. Consider:
+Before examining the canonical form of this joke, it's worthwhile to examine a simpler form.
+Some components of the joke are more easily understood without the full, distracting
+complexity of the canonical form. Consider:
 
 *A logician walks into a bar. The bartender asks, "Do you want a beer?"*
 
@@ -43,7 +44,7 @@ levelplot(
   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
   # hacky: by default, levelplot puts black lines between different colors in the panel
   # I found no way to turn off that feature, but it is possible to overwrite those
-  # lines. (At first I tried 'panel.grid', but that has too little control over 
+  # lines. (At first I tried 'panel.grid', but that has too little control over
   # line position.) If I really needed to eliminate those lines, I could use colors from the data, or
   # hackier/simpler, constant color values.
   panel = function(...) {
@@ -115,28 +116,32 @@ The basic form of the joke is "do you both want a beer?", with this outcome:
 joke <- get_jokeAB(8)
 m <- to_matrix(joke)
 
-levelplot(
-  m,
-  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
-  main = list("Do you both want a beer?", side=1, line=0.5),
-  xlab="respondent",
-  ylab="A and B's Desires",
-  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
-  panel = function(...) {
-    panel.levelplot(...)
-    panel.abline(h=(1:7 + 0.5), col=c("gray"))
-    panel.abline(v=1.5, col=c("gray"))
-  },
-  scales=list(
-    x=list(at=1:2, labels=c("A", "B")),
-    y=list(at=1:4, labels=c(
-      "A:no B:no",
-      "A:no B:yes",
-      "A:yes B:no",
-      "A:yes B:yes"
-    ))
-  )
-)
+p <- logicians_plot2(m, "Do you both want a beer?")
+print(p)
+
+# levelplot(
+#   m,
+#   col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+#   main = list("Do you both want a beer?", side=1, line=0.5),
+#   xlab="respondent",
+#   ylab="A and B's Desires",
+#   colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+#   panel = function(...) {
+#     panel.levelplot(...)
+#     panel.abline(h=(1:7 + 0.5), col=c("gray"))
+#     panel.abline(v=1.5, col=c("gray"))
+#   },
+#   scales=list(
+#     x=list(at=1:2, labels=c("A", "B")),
+#     y=list(at=1:4, labels=c(
+#       "A:no B:no",
+#       "A:no B:yes",
+#       "A:yes B:no",
+#       "A:yes B:yes"
+#     ))
+#   )
+# )
+
 ```
 
 ```{css style settings, echo = FALSE}
@@ -180,15 +185,15 @@ lp <- levelplot(
   ylab="",
   aspect="iso",
   scales=list(
-    x=list(at=1:2, labels=c("A=0", "A=1")),
-    y=list(at=1:2, labels=c("B=0", "B=1"))
+    x=list(at=1:2, labels=c("B=0", "B=1")),
+    y=list(at=1:2, labels=c("A=0", "A=1"))
   )
 )
 A <- c(F, T, F, T)
 B <- c(F, F, T, T)
 dat <- data.frame(
-  x=factor(ifelse(A, "A=1", "A=0"), levels=c("A=0", "A=1")),
-  y=factor(ifelse(B, "B=1", "B=0"), levels=c("B=0", "B=1")),
+  x=factor(ifelse(B, "B=1", "B=0"), levels=c("B=0", "B=1")),
+  y=factor(ifelse(A, "A=1", "A=0"), levels=c("A=0", "A=1")),
   source=rep("0/1", 4)
 )
 xp <- xyplot(y ~ x,
@@ -227,16 +232,16 @@ lp <- levelplot(
   ylab="",
   aspect="iso",
   scales=list(
-    x=list(at=1:2, labels=c("A=0", "A=1")),
-    y=list(at=1:2, labels=c("B=0", "B=1"))
+    x=list(at=1:2, labels=c("B=0", "B=1")),
+    y=list(at=1:2, labels=c("A=0", "A=1"))
   )
 )
 A <- c(F, T, F, T)
 B <- c(F, F, T, T)
 dat <- data.frame(
-  x=factor(ifelse(A, "A=1", "A=0"), levels=c("A=0", "A=1")),
-  y=factor(ifelse(B, "B=1", "B=0"), levels=c("B=0", "B=1")),
-  source=c("1", "2", "4", "8")
+  x=factor(ifelse(B, "B=1", "B=0"), levels=c("B=0", "B=1")),
+  y=factor(ifelse(A, "A=1", "A=0"), levels=c("A=0", "A=1")),
+  source=c("1", "4", "2", "8")
 )
 xp <- xyplot(y ~ x,
              data=dat,
@@ -257,7 +262,12 @@ Examples:
 
     AND has a '1' only for A=1, B=1, weighting value 8, so its index is 8
     OR has a '1' in three squares, index is 14
-    A and not B has index 2
+    A and not B has index 4
+
+There are an infinite number of other conventions for creating unique indices for each of the 16 functions,
+for example instead of {1, 2, 4, 8} we can choose any four prime numbers. But I
+think the {1, 2, 4, 8} convention is tidy.
+
 ### 2-Logician Completeness
 Here is a plot of all of the 2-logician jokes. Find a particular joke in the
 grid by adding up the row and column indices. The 4x2 block within the grid
