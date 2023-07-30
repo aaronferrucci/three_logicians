@@ -232,3 +232,36 @@ print(logicians_plot2(to_matrix(get_jokeAB(12)), "12: A?"))
 print(logicians_plot2(to_matrix(get_jokeAB(13)), "13: A or not B?"))
 print(logicians_plot2(to_matrix(get_jokeAB(14)), "14: A or B?"))
 print(logicians_plot2(to_matrix(get_jokeAB(15)), "15: T?"))
+
+# attempting a guide to 2-logician functions
+m <- matrix(nrow=16, ncol=8, data=rep(0, 16*8))
+
+lp <- levelplot(
+  m,
+  main = list("2-Logician Function Map", side=1, line=0.5),
+  col.regions=colorRampPalette(colors=c("white")),
+  xlab="",
+  ylab="",
+  colorkey=F,
+  panel = function(...) {
+    panel.levelplot(...)
+    # major grid lines
+    panel.abline(h=4.5)
+    panel.abline(v=0:7 * 2 + 2.5)
+  },
+  scales=list(
+    x=list(at=0:7 * 2 + 1.5, labels=0:7),
+    y=list(at=c(2.5, 6.5), labels=c("0", "8"))
+  )
+)
+
+dat <- data.frame(x = rep(0:7, 2), y = c(rep(0, 8), rep(8, 8)), source=rep("", 16))
+dat[dat$x == 0 & dat$y == 8,"source"] <- "AND"
+xp <- xyplot(y ~ x,
+             data=dat,
+             panel = function(y, x, ...) {
+               ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+                     fontfamily = "HersheySans")
+             }
+)
+lp+xp
