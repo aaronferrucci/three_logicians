@@ -214,11 +214,6 @@ There are $2^2 = 4$ squares in the grid, for each possible combination of A and 
 Some of the 16 functions of 2 inputs have names, like "AND" and "OR". And there are less common function names, like "NAND" and "XNOR". Some functions don't have particular names, and have to be laboriously described, like "A and not B". It will be handy to have a general convention for identifying the functions. Here's one convention: apply a weighting value to each of the 4 squares, like so:
 ```{r echo=F}
 m <- matrix(nrow=2, ncol=2, data=c(
-  "1", "2",
-  "4", "8"
-))
-
-m <- matrix(nrow=2, ncol=2, data=c(
   0, 0,
   0, 0
 ))
