@@ -167,11 +167,6 @@ can find the answer online, spoiler alert, it's $2^{2^{2}} = 16$. Here's how to 
 2-input logic function, like so:
 ```{r echo=F}
 m <- matrix(nrow=2, ncol=2, data=c(
-  "0/1", "0/1",
-  "0/1", "0/1"
-))
-
-m <- matrix(nrow=2, ncol=2, data=c(
   0, 0,
   0, 0
 ))
