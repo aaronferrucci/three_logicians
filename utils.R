@@ -58,13 +58,14 @@ get_jokeAB <- function(index) {
 # c(rbind()) slices ansA and ansB into the needed order.
 
 to_matrix <- function(joke) {
-  # I'll handle the 2- and 3-input forms as case statements, probably some
-  # commonality will emerge, then can refactor.
-  m <- case_when(
-    nrow(joke) == 4 ~ matrix(data=c(rbind(joke$ansA, joke$ansB)), nrow=2, ncol=4),
-    # to do: 8
-    T ~ c(0)
-  )
+  # Default - should cause downstream error
+  m <- c(0) 
+
+  if (nrow(joke) == 4) {
+    m <- matrix(data=c(rbind(joke$ansA, joke$ansB)), nrow=2, ncol=4)
+  } else if (nrow(joke) == 8) {
+    m <- matrix(data=c(rbind(joke$ansA, joke$ansB, joke$ansC)), nrow=3, ncol=8)
+  }
 
   return(m)
 }

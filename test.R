@@ -243,12 +243,7 @@ lp <- levelplot(
   xlab="",
   ylab="",
   colorkey=F,
-  panel = function(...) {
-    panel.levelplot(...)
-    # major grid lines
-    panel.abline(h=4.5)
-    panel.abline(v=0:7 * 2 + 2.5)
-  },
+  aspect="iso",
   scales=list(
     x=list(at=0:7 * 2 + 1.5, labels=0:7),
     y=list(at=c(2.5, 6.5), labels=c("0", "8"))
@@ -260,8 +255,92 @@ dat[dat$x == 0 & dat$y == 8,"source"] <- "AND"
 xp <- xyplot(y ~ x,
              data=dat,
              panel = function(y, x, ...) {
+               # major grid lines
+               panel.abline(h=4.5)
+               panel.abline(v=0:7 * 2 + 2.5)
                ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
                      fontfamily = "HersheySans")
              }
 )
-lp+xp
+print(lp+xp)
+
+m <- matrix(nrow=2, ncol=2, data=c(
+  0, 0,
+  0, 0
+))
+
+lp <- levelplot(
+  m,
+  col.regions=colorRampPalette(colors=c("white")),
+  caption="foo",
+  colorkey=F,
+  xlab="",
+  ylab="",
+  aspect="iso",
+  scales=list(
+    x=list(at=1:2, labels=c("B=0", "B=1")),
+    y=list(at=1:2, labels=c("A=0", "A=1"))
+  )
+)
+A <- c(F, T, F, T)
+B <- c(F, F, T, T)
+dat <- data.frame(
+  x=factor(ifelse(B, "B=1", "B=0"), levels=c("B=0", "B=1")),
+  y=factor(ifelse(A, "A=1", "A=0"), levels=c("A=0", "A=1")),
+  source=rep("0/1", 4)
+)
+xp <- xyplot(y ~ x,
+             data=dat,
+             panel = function(y, x, ...) {
+               panel.abline(v=1.5)
+               panel.abline(h=1.5)
+               ltext(x = x, y = y, labels = dat$source, cex = 1, font = 2,
+                     fontfamily = "HersheySans")
+             }
+)
+lp + xp
+
+
+# Working on the 3-logician completeness diagram
+# 256 jokes, each with an 3-row, 8-col answer grid
+# arrangement
+# arrange the jokes as 32-row, 8-col, for an 96-row 64-col result
+# # 16 jokes, each with a 2-row, 4-col answer grid
+# # arrange the jokes as 8-row, 2-col, for an 16-row 8-col result
+m <- matrix(nrow=0, ncol=64)
+for (row in 0:31) {
+  mc <- matrix(nrow=3, ncol=0)
+  for (col in 0:7) {
+    j <- col*32 + row
+    m0 <- to_matrix(get_joke(j))
+    mc <- cbind(mc, m0)
+  }
+
+  m <- rbind(m, mc)
+}
+
+lp <- levelplot(
+  m,
+  main = list("3-Logician Joke", side=1, line=0.5),
+  col.regions=colorRampPalette(colors=c("red", "yellow", "green")),
+  xlab="",
+  ylab="",
+  colorkey=list(at=c(-1, -.33, .33, 1), labels=list(at=c(-0.67, 0, 0.67), labels=c("No", "I don't know", "Yes!"))),
+  panel = function(...) {
+    panel.levelplot(...)
+    # minor grid lines
+    panel.abline(v=(1:15 + 0.5), col=c("gray"))
+    panel.abline(h=(1:7 + 0.5), col=c("gray"))
+    # major grid lines
+    # panel.abline(h=4.5, from=1.5, to=2.5)
+    panel.abline(h=4.5)
+    # panel.abline(v=0:7 * 2 + 2.5, from=1.5, to=2.5)
+    panel.abline(v=0:17 * 3 + 3.5)
+  },
+  scales=list(
+    x=list(at=0:31 * 3 + 2, labels=0:31),
+    y=list(at=c(2.5, 6.5), labels=c("0", "32"))
+  )
+)
+lp
+
